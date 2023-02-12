@@ -1,0 +1,76 @@
+#+TITLE: Filesafe Client
+#+AUTHOR: James Andrus
+
+
+* Table of Contents :toc:
+- [[#quick-start][Quick Start]]
+- [[#about][About]]
+- [[#filesdirectories][Files/Directories]]
+- [[#function-description][Function Description]]
+  - [[#lock][Lock]]
+  - [[#unlock][Unlock]]
+- [[#project-tracking-59][Project Tracking]]
+- [[#donate][Donate]]
+- [[#server][Server]]
+- [[#license][License]]
+
+* Quick Start
+1. Build the program if necessary.
+   * $ cd filesafe
+   * $ cargo build     # This will create a binary file "filesafe" in "filesafe/target/debug/". Move file as necessary
+2. Run the setup utility
+   * $ ./setup.py
+3. Edit the configuration file if necessary
+   * $ vi ~/.config/filesafe/filesafe.ini
+4. Run the client. If binary was moved, execute from that location.
+   * $ cd target/debug
+   * ./filesafe
+
+* About
+Filesafe is designed to be a digital safe or vault for your data with an automatic locking feature (timeout) and automatic backup feature. Filesafe (your digital vault) can be locked and unlocked with a password from the client program. See [[Function Description]] for details on locking and locking process. Your vault is a directory, specified with /protected_dir/ in *filesafe.ini*. This directory can be a directory on a separate network share, local directory on the server shared with the network (recommended for multi-user), or local directory on the server that is not shared (recommended for single-user). With a properly setup filesafe-server, a client can securely authenticate to the server and lock/unlock the /protected_dir/.
+
+* Files/Directories
+Files used by *filesafe* are kept in "$HOME/.config/filesafe".
+*** filesafe.ini
+Configuration file for server and client. See config file comments for description on variables.
+*** Others
+See filesafe-server ([[Server]]) for details pertaining to other files used by *filesafe*.
+
+* Function Description
+** Lock
+To lock filesafe, files in /protected_dir/ are first compressed (see [[Compression]]). After files are compressed to an archive, files are split into part part files. The number of part files is deteremined by the number of threads available to the server. These part files are then encrypted (see [[Encryption]]) and placed in the /encrypted/ directory.
+** Unlock
+This is the reverse process of [[Lock]]. Files are decrypted, assembled into the archive, and decompressed.
+
+* TODO Project Tracking [5/9]
++ [-] Documentation
++ [X] Make secure erase multithread
++ [ ] Daemon to show if filesafe is open?
++ [X] Create setup scripts [2/2]
+  - [X] Server
+  - [X] Client
+
+* Donate
+- XMR: 84t9GUWQVJSGxF8cbMtRBd67YDAHnTsrdWVStcdpiwcAcAnVy21U6RmLdwiQdbfsyu16UqZn6qj1gGheTMkHkYA4HbVN4zS
+- BTC: bc1q9fezeju0mgyzgcx0jlfdkvur5z6qhpuulnzyy7
+
+* Server
+https://github.com/jandrus/filesafe-server
+
+* License
+Filesafe - Secure file vault
+Copyright (C) 2023 James Andrus
+Email: jandrus@citadel.edu
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
