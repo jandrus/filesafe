@@ -9,7 +9,7 @@
 - [[#function-description][Function Description]]
   - [[#lock][Lock]]
   - [[#unlock][Unlock]]
-- [[#project-tracking-59][Project Tracking]]
+- [[#project-tracking-24][Project Tracking]]
 - [[#donate][Donate]]
 - [[#server][Server]]
 - [[#license][License]]
@@ -42,7 +42,7 @@ To lock filesafe, files in /protected_dir/ are first compressed (see [[Compressi
 ** Unlock
 This is the reverse process of [[Lock]]. Files are decrypted, assembled into the archive, and decompressed.
 
-* TODO Project Tracking [5/9]
+* TODO Project Tracking [2/4]
 + [-] Documentation
 + [X] Make secure erase multithread
 + [ ] Daemon to show if filesafe is open?
