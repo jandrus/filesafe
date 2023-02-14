@@ -266,10 +266,10 @@ fn main() {
     };
     if server_status == STATUS_OK {
         if action == REQUEST_LOCK {
-            log_event("Lock OK, Filesafe is locking");
+            log_event("Lock OK, Filesafe is locked");
         }
         if action == REQUEST_UNLOCK {
-            log_event("Unlock OK, Filesafe is unlocking");
+            log_event("Unlock OK, Filesafe is unlocked");
         }
     } else {
         if server_status == STATUS_IN_ACTION {
