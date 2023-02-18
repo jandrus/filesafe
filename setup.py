@@ -113,6 +113,11 @@ def setup_conf_file():
         conf.set("SERVER", "# Primary directory for backups will still be \'~/.config/filesafe/backup\'.")
         conf.set("SERVER", "# Provide valid full directory or \'n\' for none. This directory MUST exist at run time.")
         conf.set("SERVER", "sec_backup_dir", server_conf["sec_backup_dir"])
+        conf.set("SERVER", "# Allows filesafe to shred files (shred -u file) when locking. This will cut performance significantly, but will ensure files are properly deleted and unrecoverable with forensics.")
+        conf.set("SERVER", "# Not necessary if disk encryption is used.")
+        conf.set("SERVER", "# \'shred\' command must be installed on server (included in most linux kernels)!!!")
+        conf.set("SERVER", "# Valid values are \'y\' or \'n\'")
+        conf.set("SERVER", "shred", server_conf["shred"])
     with open(conf_file, 'w', encoding="us-ascii") as fp:
         conf.write(fp)
     print(f"Config file saved to \'{FILESAFE_DIR}filesafe.ini\'")
