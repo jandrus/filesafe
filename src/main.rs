@@ -108,7 +108,18 @@ fn main() {
         }
     };
     // NOTE: step 1
-    let server_pk = match process_server_keys(&stream) {
+    let nonce_key = match recv_msg(&stream) {
+        Ok(s) => s,
+        Err(e) => {
+            let err_msg = format!("Error with {}: {} ", stream.peer_addr().unwrap(), e);
+            log_event(&err_msg);
+            drop(stream);
+            process::exit(EX_NOHOST);
+        }
+    };
+    let nonce = &nonce_key[..8];
+    let server_key = &nonce_key[8..];
+    let server_pk = match process_server_keys(server_key) {
         Ok(pk) => pk,
         Err(e) => {
             let err_str = format!("Error failed to process server keys: {e}");
@@ -138,7 +149,7 @@ fn main() {
     let mut enc_pass: String;
     {
         // minimize time clear text password is in memory
-        let pw = match rpassword::prompt_password("Enter password: ") {
+        let mut pw = match rpassword::prompt_password("Enter password: ") {
             Ok(p) => p,
             Err(e) => {
                 let err_str = format!("Error: {e}");
@@ -146,7 +157,8 @@ fn main() {
                 process::exit(EX_DATAERR);
             }
         };
-        enc_pass = match encrypt_msg(&pw, server_pk) {
+        let mut nonce_pass = format!("{}{}", nonce, pw);
+        enc_pass = match encrypt_msg(&nonce_pass, server_pk) {
             Ok(s) => s,
             Err(e) => {
                 let err_str = format!("Error: {e}");
@@ -154,7 +166,10 @@ fn main() {
                 process::exit(EX_SOFTWARE);
             }
         };
+        nonce_pass.zeroize();
+        pw.zeroize();
     }
+    // NONCE AND PASS ARE SENT HERE
     match send_msg(&enc_pass, &stream) {
         Ok(_) => (),
         Err(e) => {
@@ -326,9 +341,8 @@ fn encrypt_msg(msg: &str, server_pk: ServerPK) -> Result<String> {
     Ok(encode(enc_data))
 }
 
-fn process_server_keys(stream: &TcpStream) -> Result<ServerPK> {
-    let server_key = recv_msg(stream)?;
-    match RsaPublicKey::from_pkcs1_pem(&server_key) {
+fn process_server_keys(server_key: &str) -> Result<ServerPK> {
+    match RsaPublicKey::from_pkcs1_pem(server_key) {
         Ok(k) => Ok(ServerPK { key: k }),
         Err(_) => bail!("Unable to parse Server's public key"),
     }
