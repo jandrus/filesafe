@@ -10,6 +10,7 @@
   - [[#lock][Lock]]
   - [[#unlock][Unlock]]
 - [[#project-tracking-03][Project Tracking]]
+- [[#contributors][Contributors]]
 - [[#donate][Donate]]
 - [[#server][Server]]
 - [[#license][License]]
@@ -46,6 +47,9 @@ This is the reverse process of [[Lock]]. Files are decrypted, assembled into the
 + [-] Documentation
 + [ ] Daemon to show if filesafe is open?
 + [ ] Windows client
+
+* Contributors
++ Michael Gerba (mgerba12@gmail.com)
 
 * Donate
 - XMR: 84t9GUWQVJSGxF8cbMtRBd67YDAHnTsrdWVStcdpiwcAcAnVy21U6RmLdwiQdbfsyu16UqZn6qj1gGheTMkHkYA4HbVN4zS
